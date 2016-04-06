@@ -1,6 +1,7 @@
 package com.veinhorn.example;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ public class MainActivity extends FragmentActivity {
 
         scrollGalleryView = (ScrollGalleryView) findViewById(R.id.scroll_gallery_view);
         scrollGalleryView
-                .setThumbnailSize(100)
+                .setThumbnailSize(250)
                 .setZoom(true)
                 .setFragmentManager(getSupportFragmentManager())
                 .addMedia(MediaInfo.mediaLoader(new DefaultImageLoader(R.drawable.wallpaper1)))
