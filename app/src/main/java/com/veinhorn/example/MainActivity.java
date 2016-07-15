@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 
+import com.hisetu.youtubefragment.YoutubeSupportFragment;
 import com.veinhorn.scrollgalleryview.MediaInfo;
 import com.veinhorn.scrollgalleryview.ScrollGalleryView;
 import com.veinhorn.scrollgalleryview.loader.DefaultImageLoader;
 import com.veinhorn.scrollgalleryview.loader.DefaultVideoLoader;
 import com.veinhorn.scrollgalleryview.loader.MediaLoader;
+import com.veinhorn.scrollgalleryview.loader.YoutubeMediaLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,9 +30,12 @@ public class MainActivity extends FragmentActivity {
 
     private ScrollGalleryView scrollGalleryView;
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        YoutubeSupportFragment.initialize("AIzaSyClSu7aOnPAQ8i29iQJxBluA_HQ9PiLyHU");
 
         List<MediaInfo> infos = new ArrayList<>(images.size());
         for (String url : images) infos.add(MediaInfo.mediaLoader(new PicassoImageLoader(url)));
@@ -43,24 +48,27 @@ public class MainActivity extends FragmentActivity {
                 .addMedia(MediaInfo.mediaLoader(new DefaultImageLoader(R.drawable.wallpaper1)))
                 .addMedia(MediaInfo.mediaLoader(new DefaultImageLoader(toBitmap(R.drawable.wallpaper7))))
                 .addMedia(MediaInfo.mediaLoader(new MediaLoader() {
-                    @Override public boolean isImage() {
+                    @Override
+                    public boolean isImage() {
                         return true;
                     }
 
-                    @Override public void loadMedia(Context context, ImageView imageView,
-                                                    MediaLoader.SuccessCallback callback) {
+                    @Override
+                    public void loadMedia(Context context, ImageView imageView,
+                                          MediaLoader.SuccessCallback callback) {
                         imageView.setImageBitmap(toBitmap(R.drawable.wallpaper3));
                         callback.onSuccess();
                     }
 
-                    @Override public void loadThumbnail(Context context, ImageView thumbnailView,
-                                                        MediaLoader.SuccessCallback callback) {
+                    @Override
+                    public void loadThumbnail(Context context, ImageView thumbnailView,
+                                              MediaLoader.SuccessCallback callback) {
                         thumbnailView.setImageBitmap(toBitmap(R.drawable.wallpaper3));
                         callback.onSuccess();
                     }
                 }))
                 .addMedia(MediaInfo.mediaLoader(new DefaultVideoLoader(movieUrl, R.mipmap.default_video)))
-                .addMedia(infos);
+                .addMedia(MediaInfo.mediaLoader(new YoutubeMediaLoader("IvUU8joBb1Q")));
     }
 
     private Bitmap toBitmap(int image) {
