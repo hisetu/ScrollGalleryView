@@ -1,14 +1,15 @@
 package com.veinhorn.scrollgalleryview;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.hisetu.youtubefragment.YoutubeSupportFragment;
 import com.veinhorn.scrollgalleryview.loader.MediaLoader;
-import com.veinhorn.scrollgalleryview.loader.YoutubeMediaLoader;
+import com.veinhorn.scrollgalleryview.loader.YoutubeLoader;
+import com.veinhorn.scrollgalleryview.loader.YoutubeThumbnailLoader;
+import com.veinhorn.scrollgalleryview.loader.YoutubeVideoLoader;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         if (position < mListOfMedia.size()) {
             MediaInfo mediaInfo = mListOfMedia.get(position);
             MediaLoader loader = mediaInfo.getLoader();
-            if (loader instanceof YoutubeMediaLoader) {
+            if (loader instanceof YoutubeLoader) {
                 fragment = loadYoutubeFragment(mediaInfo);
             } else {
                 fragment = loadImageFragment(mediaInfo);
@@ -43,10 +44,20 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         return fragment;
     }
 
-    @NonNull
-    private YoutubeSupportFragment loadYoutubeFragment(MediaInfo mediaInfo) {
-        YoutubeSupportFragment fragment = YoutubeSupportFragment.newInstance();
-        fragment.setVideoId(((YoutubeMediaLoader) mediaInfo.getLoader()).getVideoId());
+    private Fragment loadYoutubeFragment(MediaInfo mediaInfo) {
+        MediaLoader loader = mediaInfo.getLoader();
+        Fragment fragment = null;
+
+        if (loader instanceof YoutubeVideoLoader) {
+            fragment = YoutubeSupportFragment.newInstance();
+            ((YoutubeSupportFragment) fragment)
+                    .setVideoId(((YoutubeVideoLoader) loader).getVideoId());
+        } else if (loader instanceof YoutubeThumbnailLoader) {
+            fragment = new YouTubeThumbnailFragment();
+            ((YouTubeThumbnailFragment) fragment)
+                    .setMediaInfo(mediaInfo);
+        }
+
         return fragment;
     }
 

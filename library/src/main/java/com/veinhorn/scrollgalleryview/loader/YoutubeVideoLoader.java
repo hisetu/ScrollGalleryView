@@ -3,15 +3,9 @@ package com.veinhorn.scrollgalleryview.loader;
 import android.content.Context;
 import android.widget.ImageView;
 
-public class YoutubeMediaLoader implements MediaLoader {
-    public String getVideoId() {
-        return videoId;
-    }
-
-    private String videoId;
-
-    public YoutubeMediaLoader(String videoId) {
-        this.videoId = videoId;
+public class YoutubeVideoLoader extends YoutubeLoader {
+    public YoutubeVideoLoader(String videoId) {
+        super(videoId);
     }
 
     @Override

@@ -5,15 +5,19 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.hisetu.youtubefragment.YoutubeSupportFragment;
 import com.veinhorn.scrollgalleryview.MediaInfo;
 import com.veinhorn.scrollgalleryview.ScrollGalleryView;
+import com.veinhorn.scrollgalleryview.YouTubeThumbnailFragment;
 import com.veinhorn.scrollgalleryview.loader.DefaultImageLoader;
 import com.veinhorn.scrollgalleryview.loader.DefaultVideoLoader;
 import com.veinhorn.scrollgalleryview.loader.MediaLoader;
-import com.veinhorn.scrollgalleryview.loader.YoutubeMediaLoader;
+import com.veinhorn.scrollgalleryview.loader.YoutubeThumbnailLoader;
+import com.veinhorn.scrollgalleryview.loader.YoutubeVideoLoader;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +39,9 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        YoutubeSupportFragment.initialize("AIzaSyClSu7aOnPAQ8i29iQJxBluA_HQ9PiLyHU");
+        String developKey = "AIzaSyClSu7aOnPAQ8i29iQJxBluA_HQ9PiLyHU";
+        YoutubeSupportFragment.initialize(developKey);
+        YouTubeThumbnailFragment.initialize(developKey);
 
         List<MediaInfo> infos = new ArrayList<>(images.size());
         for (String url : images) infos.add(MediaInfo.mediaLoader(new PicassoImageLoader(url)));
@@ -68,7 +74,13 @@ public class MainActivity extends FragmentActivity {
                     }
                 }))
                 .addMedia(MediaInfo.mediaLoader(new DefaultVideoLoader(movieUrl, R.mipmap.default_video)))
-                .addMedia(MediaInfo.mediaLoader(new YoutubeMediaLoader("IvUU8joBb1Q")));
+                .addMedia(MediaInfo.mediaLoader(new YoutubeVideoLoader("IvUU8joBb1Q")))
+                .addMedia(MediaInfo.mediaLoader(new YoutubeThumbnailLoader("PDtMouOuWLA", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "onClick", Toast.LENGTH_SHORT).show();
+                    }
+                })));
     }
 
     private Bitmap toBitmap(int image) {
